@@ -97,25 +97,21 @@ class UrbanAirShipAndroid
         $this->_airship = $airship;
     }
     
-    public function registerAPID($token, $alias = null, $tags = null)
+    public function registerAPID($apid, $alias = null, $tags = null)
 	{
-		//$url = UAS_APIDS_URL . '2df448b0-df2b-4212-bc61-ca818334ea88';
-		
-		$url = "https://device-api.urbanairship.com/api/apids/26445d20-83ba-42aa-82d6-fbbdec713f9b";
-		
+		$url = UAS_APIDS_URL . $apid;
+			
 		$payload = array();
                         
         if ($alias != null)
         {
              $payload['alias'] = $alias;
         }
-        /*
+        
         if ($tags != null) 
         {
             $payload['tags'] = $tags;
         }
-        */
-        $payload['gcm_registration_id'] = $token;
         
         $restResponse = $this->_airship->makeCall($url, 'PUT', $payload);
                 
@@ -124,14 +120,12 @@ class UrbanAirShipAndroid
             throw new AirshipFailure($restResponse['content'], $restResponse['info']['http_code']);
         }
                 
-        print_r($restResponse);
-                
         return true;
 	}
 	
-	public function getAPIDInfo($token)
+	public function getAPIDInfo($apid)
 	{
-		$url = UAS_APIDS_URL . $token;
+		$url = UAS_APIDS_URL . $apid;
 		
 		$restResponse = $this->_airship->makeCall($url, 'GET');
         
